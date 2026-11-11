@@ -1,0 +1,21 @@
+name: Deploy Slow Coffee Web to Azure
+on:
+  workflow_dispatch:
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x'
+      - name: Restore
+        run: dotnet restore src/SlowCoffee.Web/SlowCoffee.Web.csproj
+      - name: Publish
+        run: dotnet publish src/SlowCoffee.Web/SlowCoffee.Web.csproj -c Release -o ./publish
+      - name: Deploy to Azure App Service
+        uses: azure/webapps-deploy@v3
+        with:
+          app-name: ${{ secrets.AZURE_WEBAPP_NAME }}
+          publish-profile: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE }}
+          package: ./publish

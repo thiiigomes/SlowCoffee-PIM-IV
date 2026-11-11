@@ -1,0 +1,2 @@
+@model ProdutoDto
+@{ViewData["Title"]="Editar produto";}<h1>Editar produto</h1><form asp-action="Edit" method="post" class="form-panel"><partial name="_Form" model="new ProdutoCreateDto(Model.Nome,Model.Categoria,Model.Preco,Model.Estoque)" /><button class="btn btn-coffee">Salvar alterações</button></form>

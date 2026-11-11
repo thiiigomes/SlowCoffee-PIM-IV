@@ -1,0 +1,6 @@
+@{ViewData["Title"]="Relatórios";}
+<div class="page-heading"><div><h1>Indicadores e relatórios</h1><p>Visão consolidada dos principais dados operacionais.</p></div></div>
+<div class="report-grid">
+ <article class="report-card"><span>PRODUTOS ATIVOS</span><strong>@ViewBag.TotalProdutos</strong></article><article class="report-card"><span>CLIENTES ATIVOS</span><strong>@ViewBag.TotalClientes</strong></article><article class="report-card"><span>PEDIDOS REGISTRADOS</span><strong>@ViewBag.TotalPedidos</strong></article><article class="report-card"><span>PEDIDOS PRONTOS</span><strong>@ViewBag.PedidosProntos</strong></article><article class="report-card"><span>FATURAMENTO ACUMULADO</span><strong>R$ @(((decimal)ViewBag.Faturamento).ToString("N2"))</strong></article>
+</div>
+<div class="alert alert-info mt-4">Os indicadores são calculados a partir dos registros armazenados no banco de dados. Os dados apresentados dependem do ambiente e da massa de dados cadastrada.</div>

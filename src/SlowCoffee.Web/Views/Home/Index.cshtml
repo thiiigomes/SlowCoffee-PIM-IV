@@ -1,0 +1,13 @@
+@{ViewData["Title"]="Visão geral";}
+<section class="welcome-panel"><span class="eyebrow">BEM-VINDO AO SEU PAINEL</span><h1>O ritmo certo para<br>uma gestão melhor.</h1><p>Acompanhe a operação da cafeteria, gerencie pedidos e transforme dados em decisões.</p><span class="welcome-tag">PLATAFORMA CORPORATIVA · PIM IV</span></section>
+<section class="metric-grid" aria-label="Indicadores da operação">
+ <article class="metric-card"><div class="metric-top"><span>Produtos ativos</span><span class="metric-icon">◈</span></div><div class="metric-value">@ViewBag.TotalProdutos</div><div class="metric-note">Itens disponíveis no catálogo</div></article>
+ <article class="metric-card"><div class="metric-top"><span>Clientes ativos</span><span class="metric-icon">♙</span></div><div class="metric-value">@ViewBag.TotalClientes</div><div class="metric-note">Relacionamento com clientes</div></article>
+ <article class="metric-card"><div class="metric-top"><span>Pedidos registrados</span><span class="metric-icon">▤</span></div><div class="metric-value">@ViewBag.TotalPedidos</div><div class="metric-note">Movimentações cadastradas</div></article>
+ <article class="metric-card"><div class="metric-top"><span>Faturamento acumulado</span><span class="metric-icon">R$</span></div><div class="metric-value">R$ @(((decimal)ViewBag.Faturamento).ToString("N2"))</div><div class="metric-note">Desconsidera pedidos cancelados</div></article>
+</section>
+<section class="panel"><div class="d-flex justify-content-between align-items-center"><div><h2 class="section-title">Acesso rápido</h2><p class="text-secondary small mb-0 mt-1">Atalhos para as principais rotinas.</p></div><span class="badge-soft">GESTÃO</span></div><div class="quick-grid">
+ <a class="quick-link" asp-controller="Pedido" asp-action="Create"><span>＋ NOVA OPERAÇÃO</span><strong>Registrar pedido</strong><span>Inicie um novo pedido de cliente.</span></a>
+ <a class="quick-link" asp-controller="Produto" asp-action="Index"><span>◈ CATÁLOGO</span><strong>Gerenciar produtos</strong><span>Atualize preços e níveis de estoque.</span></a>
+ <a class="quick-link" asp-controller="Relatorio" asp-action="Index"><span>▥ INTELIGÊNCIA</span><strong>Ver indicadores</strong><span>Acompanhe os dados da cafeteria.</span></a>
+ </div></section>

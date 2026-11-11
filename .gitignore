@@ -1,0 +1,25 @@
+
+# Compilação .NET
+**/bin/
+**/obj/
+.vs/
+*.user
+*.suo
+*.pdb
+*.cache
+
+# Configurações e credenciais locais
+.env
+.env.*
+!.env.example
+**/appsettings.Development.json
+**/appsettings.Local.json
+**/secrets*.json
+
+# Dependências e arquivos temporários
+**/node_modules/
+.DS_Store
+Thumbs.db
+
+# IDEs
+.idea/

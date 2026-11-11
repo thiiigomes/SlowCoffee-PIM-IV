@@ -1,0 +1,116 @@
+
+@model IReadOnlyList<PedidoDto>
+
+@{
+    ViewData["Title"] = "Pedidos";
+}
+
+<div class="page-heading">
+    <div>
+        <h1>Pedidos</h1>
+        <p class="text-secondary small mb-0">
+            Acompanhe e atualize o fluxo de atendimento.
+        </p>
+    </div>
+
+    <a class="btn btn-coffee" asp-controller="Pedido" asp-action="Create">
+        Novo pedido
+    </a>
+</div>
+
+<div class="table-panel table-responsive">
+    <table class="table align-middle">
+        <thead>
+            <tr>
+                <th>#</th>
+                <th>Cliente</th>
+                <th>Itens</th>
+                <th>Total</th>
+                <th>Status</th>
+                <th>Ações</th>
+            </tr>
+        </thead>
+
+        <tbody>
+            @foreach (var x in Model)
+            {
+                <tr>
+                    <td>@x.Id</td>
+
+                    <td>@x.Cliente</td>
+
+                    <td>
+                        @string.Join(", ", x.Itens.Select(i => $"{i.Quantidade}x {i.Produto}"))
+                    </td>
+
+                    <td>R$ @x.ValorTotal.ToString("N2")</td>
+
+                    <td>
+                        @if (x.Status == "Cancelado")
+                        {
+                            <span class="badge bg-danger">Cancelado</span>
+                        }
+                        else if (x.Status == "Entregue")
+                        {
+                            <span class="badge bg-success">Entregue</span>
+                        }
+                        else if (x.Status == "Pronto")
+                        {
+                            <span class="badge bg-info text-dark">Pronto</span>
+                        }
+                        else if (x.Status == "EmPreparo")
+                        {
+                            <span class="badge bg-warning text-dark">Em preparo</span>
+                        }
+                        else
+                        {
+                            <span class="badge bg-secondary">Recebido</span>
+                        }
+                    </td>
+
+                    <td>
+                        @if (x.Status != "Cancelado" && x.Status != "Entregue")
+                        {
+                            <div class="d-flex flex-wrap gap-2">
+
+                                <form asp-controller="Pedido"
+                                      asp-action="Status"
+                                      method="post">
+
+                                    @Html.AntiForgeryToken()
+
+                                    <input type="hidden" name="id" value="@x.Id" />
+                                    <input type="hidden" name="status" value="Pronto" />
+
+                                    <button type="submit" class="btn btn-sm btn-outline-secondary">
+                                        Marcar pronto
+                                    </button>
+                                </form>
+
+                                <form asp-controller="Pedido"
+                                      asp-action="Status"
+                                      method="post"
+                                      onsubmit="return confirm('Deseja realmente cancelar este pedido? O estoque dos produtos será restaurado.');">
+
+                                    @Html.AntiForgeryToken()
+
+                                    <input type="hidden" name="id" value="@x.Id" />
+                                    <input type="hidden" name="status" value="Cancelado" />
+
+                                    <button type="submit" class="btn btn-sm btn-outline-danger">
+                                        Cancelar pedido
+                                    </button>
+                                </form>
+
+                            </div>
+                        }
+                        else
+                        {
+                            <span class="text-secondary small">Sem ações disponíveis</span>
+                        }
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

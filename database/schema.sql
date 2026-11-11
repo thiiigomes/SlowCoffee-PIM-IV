@@ -1,0 +1,52 @@
+-- Slow Coffee PIM IV - MySQL 8.0
+-- Crie/seleciona este banco no MySQL Workbench antes de executar a aplicação.
+CREATE DATABASE IF NOT EXISTS slowcoffee_db
+  CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci;
+USE slowcoffee_db;
+
+CREATE TABLE IF NOT EXISTS Clientes (
+  Id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+  Nome VARCHAR(150) NOT NULL,
+  Telefone VARCHAR(20) NOT NULL,
+  Email VARCHAR(180) NOT NULL,
+  Ativo BOOLEAN NOT NULL DEFAULT TRUE,
+  CriadoEm DATETIME(6) NOT NULL DEFAULT CURRENT_TIMESTAMP(6),
+  CONSTRAINT UQ_Clientes_Email UNIQUE (Email)
+) ENGINE=InnoDB;
+
+CREATE TABLE IF NOT EXISTS Produtos (
+  Id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+  Nome VARCHAR(120) NOT NULL,
+  Categoria VARCHAR(80) NOT NULL,
+  Preco DECIMAL(18,2) NOT NULL,
+  Estoque INT NOT NULL,
+  Ativo BOOLEAN NOT NULL DEFAULT TRUE,
+  CriadoEm DATETIME(6) NOT NULL DEFAULT CURRENT_TIMESTAMP(6),
+  CONSTRAINT CK_Produtos_Preco CHECK (Preco > 0),
+  CONSTRAINT CK_Produtos_Estoque CHECK (Estoque >= 0)
+) ENGINE=InnoDB;
+
+CREATE TABLE IF NOT EXISTS Pedidos (
+  Id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+  ClienteId INT NOT NULL,
+  CriadoEm DATETIME(6) NOT NULL DEFAULT CURRENT_TIMESTAMP(6),
+  Status INT NOT NULL DEFAULT 1,
+  ValorTotal DECIMAL(18,2) NOT NULL,
+  CONSTRAINT CK_Pedidos_ValorTotal CHECK (ValorTotal >= 0),
+  CONSTRAINT FK_Pedidos_Clientes FOREIGN KEY (ClienteId) REFERENCES Clientes(Id),
+  INDEX IX_Pedidos_CriadoEm (CriadoEm),
+  INDEX IX_Pedidos_Status (Status)
+) ENGINE=InnoDB;
+
+CREATE TABLE IF NOT EXISTS ItensPedido (
+  Id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+  PedidoId INT NOT NULL,
+  ProdutoId INT NOT NULL,
+  Quantidade INT NOT NULL,
+  PrecoUnitario DECIMAL(18,2) NOT NULL,
+  CONSTRAINT CK_ItensPedido_Quantidade CHECK (Quantidade > 0),
+  CONSTRAINT CK_ItensPedido_Preco CHECK (PrecoUnitario >= 0),
+  CONSTRAINT FK_ItensPedido_Pedidos FOREIGN KEY (PedidoId) REFERENCES Pedidos(Id) ON DELETE CASCADE,
+  CONSTRAINT FK_ItensPedido_Produtos FOREIGN KEY (ProdutoId) REFERENCES Produtos(Id),
+  INDEX IX_ItensPedido_PedidoId (PedidoId)
+) ENGINE=InnoDB;
